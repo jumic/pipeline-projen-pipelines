@@ -9,6 +9,13 @@ exports[`Snapshot 1`] = `
       "Type": "AWS::SSM::Parameter::Value<String>",
     },
   },
+  "Resources": {
+    "MyQueueE6CA6235": {
+      "DeletionPolicy": "Delete",
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+  },
   "Rules": {
     "CheckBootstrapVersion": {
       "Assertions": [

@@ -1,11 +1,12 @@
 import { App, Stack, StackProps } from 'aws-cdk-lib';
+import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
 
 export class MyStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
 
-    // define resources here...
+    new Queue(this, 'MyQueue');
   }
 }
 
