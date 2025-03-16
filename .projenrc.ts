@@ -1,13 +1,31 @@
 import { awscdk } from 'projen';
-const project = new awscdk.AwsCdkTypeScriptApp({
+import { GithubCDKPipeline } from 'projen-pipelines';
+
+const app = new awscdk.AwsCdkTypeScriptApp({
   cdkVersion: '2.1.0',
   defaultReleaseBranch: 'main',
   name: 'pipeline-projen-pipelines',
   projenrcTs: true,
-
-  // deps: [],                /* Runtime dependencies of this module. */
-  // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
-  // devDeps: [],             /* Build dependencies for this module. */
-  // packageName: undefined,  /* The "name" in package.json. */
+  deps: ['projen-pipelines'],
 });
-project.synth();
+
+new GithubCDKPipeline(app, {
+  stackPrefix: 'MyApp',
+  iamRoleArns: {
+    default: 'arn:aws:iam::857739166276:role/GithubDeploymentRole',
+  },
+  pkgNamespace: '@jumic',
+  useGithubPackagesForAssembly: true,
+  stages: [
+    {
+      name: 'dev',
+      env: { account: '352770552266', region: 'eu-central-1' },
+    }, {
+      name: 'prod',
+      manualApproval: true,
+      env: { account: '505825668341', region: 'eu-central-1' },
+    },
+  ],
+});
+
+app.synth();
