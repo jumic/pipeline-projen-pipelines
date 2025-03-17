@@ -1,6 +1,7 @@
-import { App, Stack, StackProps } from 'aws-cdk-lib';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
+import { PipelineApp } from './app';
 
 export class MyStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
@@ -10,15 +11,17 @@ export class MyStack extends Stack {
   }
 }
 
-// for development, use account/region from cdk cli
-const devEnv = {
-  account: process.env.CDK_DEFAULT_ACCOUNT,
-  region: process.env.CDK_DEFAULT_REGION,
-};
-
-const app = new App();
-
-new MyStack(app, 'pipeline-projen-pipelines-dev', { env: devEnv });
-// new MyStack(app, 'pipeline-projen-pipelines-prod', { env: prodEnv });
+const app = new PipelineApp({
+  provideDevStack: (scope, id, props) => {
+    return new MyStack(scope, id, {
+      ...props,
+    });
+  },
+  provideProdStack: (scope, id, props) => {
+    return new MyStack(scope, id, {
+      ...props,
+    });
+  },
+});
 
 app.synth();
