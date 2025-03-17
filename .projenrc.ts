@@ -13,14 +13,6 @@ new GithubCDKPipeline(app, {
   stackPrefix: 'MyApp',
   iamRoleArns: {
     default: 'arn:aws:iam::857739166276:role/GithubDeploymentRole',
-    assetPublishingPerStage: {
-      dev: 'cdk-hnb659fds-file-publishing-role-352770552266-eu-central-1',
-      prod: 'cdk-hnb659fds-file-publishing-role-505825668341-eu-central-1',
-    },
-    deployment: {
-      dev: 'cdk-hnb659fds-deploy-role-352770552266-eu-central-1',
-      prod: 'cdk-hnb659fds-deploy-role-505825668341-eu-central-1',
-    },
   },
   pkgNamespace: '@jumic',
   useGithubPackagesForAssembly: true,

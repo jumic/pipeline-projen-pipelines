@@ -53,17 +53,10 @@ jobs:
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: cdk-hnb659fds-file-publishing-role-352770552266-eu-central-1
+          role-to-assume: arn:aws:iam::857739166276:role/GithubDeploymentRole
           role-session-name: GitHubAction
           aws-region: us-east-1
-      - run: npx projen publish:assets:dev
-      - name: AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: cdk-hnb659fds-file-publishing-role-505825668341-eu-central-1
-          role-session-name: GitHubAction
-          aws-region: us-east-1
-      - run: npx projen publish:assets:prod
+      - run: npx projen publish:assets
       - run: npx projen bump
       - run: npx projen release:push-assembly
   deploy-dev:
@@ -89,7 +82,7 @@ jobs:
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: cdk-hnb659fds-deploy-role-352770552266-eu-central-1
+          role-to-assume: arn:aws:iam::857739166276:role/GithubDeploymentRole
           role-session-name: GitHubAction
           aws-region: eu-central-1
       - run: npx projen deploy:dev
