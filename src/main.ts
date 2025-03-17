@@ -8,6 +8,8 @@ export class MyStack extends Stack {
     super(scope, id, props);
 
     new Queue(this, 'MyQueue');
+    new Queue(this, 'AnotherQueue');
+
   }
 }
 

@@ -10,6 +10,11 @@ exports[`Snapshot 1`] = `
     },
   },
   "Resources": {
+    "AnotherQueue0C961D85": {
+      "DeletionPolicy": "Delete",
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
     "MyQueueE6CA6235": {
       "DeletionPolicy": "Delete",
       "Type": "AWS::SQS::Queue",
