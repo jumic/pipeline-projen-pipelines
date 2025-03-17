@@ -28,7 +28,7 @@ jobs:
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::857739166276:role/GithubDeploymentRole
+          role-to-assume: cdk-hnb659fds-deploy-role-505825668341-eu-central-1
           role-session-name: GitHubAction
           aws-region: eu-central-1
       - run: npx projen deploy:prod
