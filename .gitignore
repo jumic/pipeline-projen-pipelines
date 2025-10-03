@@ -53,6 +53,5 @@ junit.xml
 ~version.json
 !/src/app.ts
 !/.github/workflows/deploy.yml
-!/.npmrc
 !/.github/workflows/release-prod.yml
 !/.projenrc.ts

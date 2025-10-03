@@ -6,20 +6,18 @@ import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import * as fs from 'fs';
 
 const versioningConfig = {
+  "enabled": true,
   "strategy": {
     "format": "{git-tag}",
     "components": {
       "gitTag": {
-        "stripPrefix": "v",
-        "annotatedOnly": true,
-        "includeSinceTag": true
+        "stripPrefix": "v"
       },
       "commitCount": {
         "countFrom": "all"
       }
     }
   },
-  "enabled": true,
   "outputs": {
     "cloudFormation": {
       "enabled": true
@@ -27,6 +25,28 @@ const versioningConfig = {
     "parameterStore": {
       "enabled": false,
       "parameterName": ""
+    }
+  },
+  "stageOverrides": {
+    "dev": {
+      "enabled": true,
+      "strategy": {
+        "format": "{commit-count}",
+        "components": {
+          "commitCount": {
+            "countFrom": "all"
+          }
+        }
+      },
+      "outputs": {
+        "cloudFormation": {
+          "enabled": true
+        },
+        "parameterStore": {
+          "enabled": false,
+          "parameterName": ""
+        }
+      }
     }
   }
 };
@@ -229,7 +249,7 @@ export class PipelineApp extends App {
     this.node.children.forEach((child) => {
       if (child instanceof Stack) {
         const stageName = child.stackName.split('-').pop() || 'default';
-        addVersioningToStack(child, stageName, undefined);
+        addVersioningToStack(child, stageName, versioningConfig.stageOverrides);
       }
     });
 

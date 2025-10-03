@@ -14,7 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: read
       id-token: write
     concurrency:
       group: deploy-prod
@@ -27,7 +26,6 @@ jobs:
           node-version: "20"
       - name: Checkout
         uses: actions/checkout@v4
-      - run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
       - run: npx projen install:ci
       - run: yarn add @jumic/pipeline-projen-pipelines@${{github.event.inputs.version}}
       - run: mv ./node_modules/@jumic/pipeline-projen-pipelines cdk.out

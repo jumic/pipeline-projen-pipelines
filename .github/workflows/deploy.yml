@@ -13,7 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: read
     env:
       CI: "true"
     steps:
@@ -22,7 +21,6 @@ jobs:
           node-version: "20"
       - name: Checkout
         uses: actions/checkout@v4
-      - run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
       - run: npx projen install:ci
       - run: npx projen build
       - name: Upload Artifact
@@ -37,7 +35,6 @@ jobs:
     permissions:
       id-token: write
       contents: write
-      packages: write
     env:
       CI: "true"
     steps:
@@ -54,7 +51,6 @@ jobs:
         with:
           name: cloud-assembly
           path: cdk.out/
-      - run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
       - run: npx projen install:ci
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -71,7 +67,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: read
       id-token: write
     concurrency:
       group: deploy-dev
@@ -89,7 +84,6 @@ jobs:
         with:
           name: cloud-assembly
           path: cdk.out/
-      - run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
       - run: npx projen install:ci
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4

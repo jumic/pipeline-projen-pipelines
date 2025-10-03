@@ -1,5 +1,6 @@
 import { awscdk } from 'projen';
 import { GithubCDKPipeline, VersioningOutputs, VersioningStrategy } from 'projen-pipelines';
+import { ReleaseTrigger } from 'projen/lib/release';
 
 const app = new awscdk.AwsCdkTypeScriptApp({
   cdkVersion: '2.1.0',
@@ -7,6 +8,7 @@ const app = new awscdk.AwsCdkTypeScriptApp({
   name: 'pipeline-projen-pipelines',
   projenrcTs: true,
   deps: ['projen-pipelines'],
+  releaseTrigger: ReleaseTrigger.manual(),  
 });
 
 new GithubCDKPipeline(app, {
@@ -15,7 +17,7 @@ new GithubCDKPipeline(app, {
     default: 'arn:aws:iam::857739166276:role/GithubDeploymentRole',
   },
   pkgNamespace: '@jumic',
-  useGithubPackagesForAssembly: true,
+  // useGithubPackagesForAssembly: true,
   stages: [
     {
       name: 'dev',
@@ -27,13 +29,16 @@ new GithubCDKPipeline(app, {
     },
   ],
   versioning: {
-    strategy: VersioningStrategy.gitTag({
-    stripPrefix: 'v',           // Strip 'v' from tags (v1.2.3 → 1.2.3)
-    annotatedOnly: true,        // Only use annotated tags
-    includeSinceTag: true       // Include commits since tag
-  }),
-  enabled: true,
+    enabled: true,
+    strategy: VersioningStrategy.gitTag(),
     outputs: VersioningOutputs.standard(),
+    stageOverrides: {
+      dev: {
+        enabled: true,
+        strategy: VersioningStrategy.commitCount(),
+        outputs: VersioningOutputs.minimal()
+      },
+    }
   }
 });
 
