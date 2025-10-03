@@ -50,6 +50,7 @@ junit.xml
 .cdk.staging/
 .parcel-cache/
 /cdk-outputs-*.json
+~version.json
 !/src/app.ts
 !/.github/workflows/deploy.yml
 !/.npmrc

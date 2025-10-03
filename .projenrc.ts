@@ -1,5 +1,5 @@
 import { awscdk } from 'projen';
-import { GithubCDKPipeline } from 'projen-pipelines';
+import { GithubCDKPipeline, VersioningOutputs, VersioningStrategy } from 'projen-pipelines';
 
 const app = new awscdk.AwsCdkTypeScriptApp({
   cdkVersion: '2.1.0',
@@ -26,6 +26,15 @@ new GithubCDKPipeline(app, {
       env: { account: '505825668341', region: 'eu-central-1' },
     },
   ],
+  versioning: {
+    strategy: VersioningStrategy.gitTag({
+    stripPrefix: 'v',           // Strip 'v' from tags (v1.2.3 → 1.2.3)
+    annotatedOnly: true,        // Only use annotated tags
+    includeSinceTag: true       // Include commits since tag
+  }),
+  enabled: true,
+    outputs: VersioningOutputs.standard(),
+  }
 });
 
 app.synth();
