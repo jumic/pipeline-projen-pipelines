@@ -26,28 +26,6 @@ const versioningConfig = {
       "enabled": false,
       "parameterName": ""
     }
-  },
-  "stageOverrides": {
-    "dev": {
-      "enabled": true,
-      "strategy": {
-        "format": "{commit-count}",
-        "components": {
-          "commitCount": {
-            "countFrom": "all"
-          }
-        }
-      },
-      "outputs": {
-        "cloudFormation": {
-          "enabled": true
-        },
-        "parameterStore": {
-          "enabled": false,
-          "parameterName": ""
-        }
-      }
-    }
   }
 };
 
@@ -249,7 +227,7 @@ export class PipelineApp extends App {
     this.node.children.forEach((child) => {
       if (child instanceof Stack) {
         const stageName = child.stackName.split('-').pop() || 'default';
-        addVersioningToStack(child, stageName, versioningConfig.stageOverrides);
+        addVersioningToStack(child, stageName, undefined);
       }
     });
 

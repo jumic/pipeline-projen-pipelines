@@ -17,14 +17,14 @@ new GithubCDKPipeline(app, {
     default: 'arn:aws:iam::857739166276:role/GithubDeploymentRole',
   },
   pkgNamespace: '@jumic',
-  // useGithubPackagesForAssembly: true,
+  useGithubPackagesForAssembly: true,
   stages: [
     {
       name: 'dev',
       env: { account: '352770552266', region: 'eu-central-1' },
     }, {
       name: 'prod',
-      manualApproval: true,
+      // manualApproval: true,
       env: { account: '505825668341', region: 'eu-central-1' },
     },
   ],
@@ -32,14 +32,7 @@ new GithubCDKPipeline(app, {
     enabled: true,
     strategy: VersioningStrategy.gitTag(),
     outputs: VersioningOutputs.standard(),
-    stageOverrides: {
-      dev: {
-        enabled: true,
-        strategy: VersioningStrategy.commitCount(),
-        outputs: VersioningOutputs.minimal()
-      },
-    }
-  }
+  },
 });
 
 app.synth();
