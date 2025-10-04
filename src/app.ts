@@ -8,14 +8,9 @@ import * as fs from 'fs';
 const versioningConfig = {
   "enabled": true,
   "strategy": {
-    "format": "{git-tag}",
+    "format": "{package-version}",
     "components": {
-      "gitTag": {
-        "stripPrefix": "v"
-      },
-      "commitCount": {
-        "countFrom": "all"
-      }
+      "packageJson": {}
     }
   },
   "outputs": {

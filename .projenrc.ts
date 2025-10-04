@@ -30,7 +30,7 @@ new GithubCDKPipeline(app, {
   ],
   versioning: {
     enabled: true,
-    strategy: VersioningStrategy.commitCount(),
+    strategy: VersioningStrategy.packageJson(),
     outputs: VersioningOutputs.standard(),
   },
 });
