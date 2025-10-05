@@ -1,6 +1,6 @@
 import { awscdk } from 'projen';
-import { GithubCDKPipeline, VersioningOutputs, VersioningStrategy } from 'projen-pipelines';
 import { ReleaseTrigger } from 'projen/lib/release';
+import { GithubCDKPipeline, VersioningOutputs, VersioningStrategy } from 'projen-pipelines';
 
 const app = new awscdk.AwsCdkTypeScriptApp({
   cdkVersion: '2.1.0',

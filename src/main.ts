@@ -9,6 +9,7 @@ export class MyStack extends Stack {
 
     new Queue(this, 'MyQueue');
     new Queue(this, 'AnotherQueue');
+    new Queue(this, 'ThirdQueue');
 
   }
 }
