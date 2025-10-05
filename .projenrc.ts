@@ -30,11 +30,7 @@ new GithubCDKPipeline(app, {
   ],
   versioning: {
     enabled: true,
-    strategy: VersioningStrategy.gitTag({
-      stripPrefix: 'v',           // Strip 'v' from tags (v1.2.3 → 1.2.3)
-      annotatedOnly: true,        // Only use annotated tags
-      includeSinceTag: true       // Include commits since tag
-    }),
+    strategy: VersioningStrategy.gitTag(),
     outputs: VersioningOutputs.standard(),
   },
 });
