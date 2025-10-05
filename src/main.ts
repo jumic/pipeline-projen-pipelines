@@ -1,5 +1,5 @@
 import { Stack, StackProps } from 'aws-cdk-lib';
-import { Queue } from 'aws-cdk-lib/aws-sqs';
+import { Queue, QueueEncryption } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
 import { PipelineApp } from './app';
 
@@ -9,7 +9,9 @@ export class MyStack extends Stack {
 
     new Queue(this, 'MyQueue');
     new Queue(this, 'AnotherQueue');
-    new Queue(this, 'ThirdQueue');
+    new Queue(this, 'ThirdQueue', {
+      encryption: QueueEncryption.KMS_MANAGED,
+    });
 
   }
 }
