@@ -8,7 +8,7 @@ const app = new awscdk.AwsCdkTypeScriptApp({
   name: 'pipeline-projen-pipelines',
   projenrcTs: true,
   deps: ['projen-pipelines'],
-  releaseTrigger: ReleaseTrigger.manual(),  
+  releaseTrigger: ReleaseTrigger.manual(),
 });
 
 new GithubCDKPipeline(app, {
@@ -30,7 +30,11 @@ new GithubCDKPipeline(app, {
   ],
   versioning: {
     enabled: true,
-    strategy: VersioningStrategy.gitTag(),
+    strategy: VersioningStrategy.gitTag({
+      stripPrefix: 'v',           // Strip 'v' from tags (v1.2.3 → 1.2.3)
+      annotatedOnly: true,        // Only use annotated tags
+      includeSinceTag: true       // Include commits since tag
+    }),
     outputs: VersioningOutputs.standard(),
   },
 });

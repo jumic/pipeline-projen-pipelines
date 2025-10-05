@@ -11,7 +11,9 @@ const versioningConfig = {
     "format": "{git-tag}",
     "components": {
       "gitTag": {
-        "stripPrefix": "v"
+        "stripPrefix": "v",
+        "annotatedOnly": true,
+        "includeSinceTag": true
       },
       "commitCount": {
         "countFrom": "all"
