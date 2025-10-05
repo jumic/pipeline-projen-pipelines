@@ -58,7 +58,7 @@
   "dependencies": {
     "aws-cdk-lib": "^2.1.0",
     "constructs": "^10.0.5",
-    "projen-pipelines": "^0.2.15"
+    "projen-pipelines": "^0.3.0"
   },
   "license": "Apache-2.0",
   "publishConfig": {

@@ -21,12 +21,14 @@ jobs:
         with:
           node-version: "20"
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
       - run: npx projen install:ci
       - run: npx projen build
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4.3.6
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: cloud-assembly
           path: cdk.out/
@@ -36,8 +38,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-      contents: read
-      packages: read
+      contents: write
+      packages: write
     env:
       CI: "true"
     steps:
@@ -45,24 +47,26 @@ jobs:
         with:
           node-version: "20"
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - run: git config --global user.name "github-actions" && git config --global user.email "github-actions@github.com"
       - name: Download Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: cloud-assembly
           path: cdk.out/
       - run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
       - run: npx projen install:ci
       - name: AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: arn:aws:iam::857739166276:role/GithubDeploymentRole
           role-session-name: GitHubAction
           aws-region: us-east-1
       - run: npx projen publish:assets
+      - run: npx projen bump
+      - run: npx projen release:push-assembly
   deploy-dev:
     name: Deploy stage dev to AWS
     needs: assetUpload
@@ -81,63 +85,23 @@ jobs:
         with:
           node-version: "20"
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Download Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: cloud-assembly
           path: cdk.out/
       - run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
       - run: npx projen install:ci
       - name: AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: arn:aws:iam::857739166276:role/GithubDeploymentRole
           role-session-name: GitHubAction
           aws-region: eu-central-1
       - run: npx projen deploy:dev
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4.3.6
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: cdk-outputs-dev
           path: cdk-outputs-dev.json
-  deploy-prod:
-    name: Deploy stage prod to AWS
-    needs:
-      - assetUpload
-      - deploy-dev
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: read
-      id-token: write
-    concurrency:
-      group: deploy-prod
-      cancel-in-progress: false
-    env:
-      CI: "true"
-    steps:
-      - uses: actions/setup-node@v5
-        with:
-          node-version: "20"
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Download Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: cloud-assembly
-          path: cdk.out/
-      - run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
-      - run: npx projen install:ci
-      - name: AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::857739166276:role/GithubDeploymentRole
-          role-session-name: GitHubAction
-          aws-region: eu-central-1
-      - run: npx projen deploy:prod
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4.3.6
-        with:
-          name: cdk-outputs-prod
-          path: cdk-outputs-prod.json

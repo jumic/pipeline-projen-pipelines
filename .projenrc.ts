@@ -24,13 +24,13 @@ new GithubCDKPipeline(app, {
       env: { account: '352770552266', region: 'eu-central-1' },
     }, {
       name: 'prod',
-      // manualApproval: true,
+      manualApproval: true,
       env: { account: '505825668341', region: 'eu-central-1' },
     },
   ],
   versioning: {
     enabled: true,
-    strategy: VersioningStrategy.packageJson(),
+    strategy: VersioningStrategy.gitTag(),
     outputs: VersioningOutputs.standard(),
   },
 });
