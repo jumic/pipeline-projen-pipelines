@@ -22,6 +22,9 @@ exports[`Snapshot 1`] = `
     },
     "ThirdQueue074C5B0A": {
       "DeletionPolicy": "Delete",
+      "Properties": {
+        "KmsMasterKeyId": "alias/aws/sqs",
+      },
       "Type": "AWS::SQS::Queue",
       "UpdateReplacePolicy": "Delete",
     },
